@@ -45,14 +45,16 @@ export default function LoginPage() {
       {/* form */}
       <div className="flex items-center justify-center px-6 py-12 sm:px-10">
         <div className="w-full max-w-sm">
-          <span className="text-xl font-semibold tracking-tight">Imeji</span>
+          <span className="font-serif text-2xl font-medium tracking-tight">
+            Imeji
+          </span>
 
           {/* keyed wrapper re-animates on every mode switch */}
           <div
             key={mode}
             className="animate-in fade-in-0 slide-in-from-bottom-3 mt-10 duration-500 ease-out"
           >
-            <h1 className="text-3xl font-semibold tracking-tight">
+            <h1 className="font-serif text-4xl font-medium tracking-tight">
               {mode === "sign-in" ? "Welcome back" : "Create your account"}
             </h1>
             <p className="text-muted-foreground mt-2 text-sm">

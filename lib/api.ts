@@ -2,12 +2,16 @@
 // Stateless bearer auth: token persisted in localStorage, attached to every protected call.
 
 import type {
+  ApplyOpsResult,
+  ChatMessage,
   Concept,
   CreateConceptInput,
+  GenerateBody,
   GraphData,
   Mindmap,
   MindmapDetail,
   MindmapListItem,
+  Op,
   UpdateConceptInput,
 } from "@/lib/types"
 
@@ -121,6 +125,68 @@ export function listMindmaps(
   if (params.offset != null) q.set("offset", String(params.offset))
   const qs = q.toString()
   return apiFetch(`/api/mindmaps${qs ? `?${qs}` : ""}`)
+}
+
+/**
+ * POST that returns the raw streaming Response (so callers can read headers and
+ * consume a growing body). Attaches Bearer + json. Throws ApiError on non-OK,
+ * surfacing `{ error }` from the body.
+ */
+async function postStream(path: string, body: unknown): Promise<Response> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  }
+  const token = getToken()
+  if (token) headers["Authorization"] = `Bearer ${token}`
+
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+  })
+
+  if (!res.ok) {
+    let message = res.statusText || "Request failed"
+    try {
+      const data = safeJson(await res.text())
+      if (data && typeof data === "object" && "error" in data) {
+        message = String((data as { error: unknown }).error)
+      }
+    } catch {
+      // keep statusText
+    }
+    throw new ApiError(res.status, message)
+  }
+  return res
+}
+
+/** AI generation. Stream the growing { title, concepts } body; read x-mindmap-id. */
+export function generateMindmapStream(body: GenerateBody): Promise<Response> {
+  return postStream(`/api/mindmaps/generate`, body)
+}
+
+/** Map-grounded chat. Streams raw assistant text. Read-only. */
+export function chatStream(body: {
+  mapId: string | null
+  messages: ChatMessage[]
+}): Promise<Response> {
+  return postStream(`/api/chat`, body)
+}
+
+/** AI edit proposal. Streams a growing { summary, ops } JSON. No mutation. */
+export function assistStream(
+  mapId: string,
+  body: { instruction: string; selection?: string[] | null; messages?: ChatMessage[] | null },
+): Promise<Response> {
+  return postStream(`/api/mindmaps/${mapId}/assist`, body)
+}
+
+/** Apply edit ops transactionally; returns the updated map + full tree + idMap. */
+export function applyOps(mapId: string, ops: Op[]): Promise<ApplyOpsResult> {
+  return apiFetch(`/api/mindmaps/${mapId}/ops`, {
+    method: "POST",
+    body: { ops },
+  })
 }
 
 export function createMindmap(title: string): Promise<Mindmap> {

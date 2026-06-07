@@ -6,7 +6,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-6 pt-20 pb-10 sm:px-10">
         <div className="flex flex-col justify-between gap-12 sm:flex-row sm:items-start">
           <div className="max-w-sm">
-            <p className="text-2xl leading-snug font-medium tracking-tight text-balance text-white/90">
+            <p className="font-serif text-3xl leading-snug font-medium tracking-tight text-balance text-white/90">
               Every idea deserves
               <br />a place to take shape.
             </p>
@@ -42,7 +42,7 @@ export function SiteFooter() {
         <div className="mt-20 overflow-hidden">
           <div
             aria-hidden
-            className="leading-[0.8] font-semibold tracking-tighter text-white/90 select-none"
+            className="font-serif leading-[0.8] font-medium tracking-tight text-white/90 select-none"
             style={{ fontSize: "clamp(5rem, 22vw, 18rem)" }}
           >
             imeji

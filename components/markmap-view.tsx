@@ -51,5 +51,11 @@ export function MarkmapView({ markdown }: { markdown: string }) {
     }
   }, [])
 
-  return <svg ref={svgRef} className="h-full w-full" />
+  return (
+    <svg
+      ref={svgRef}
+      className="markmap-svg h-full w-full"
+      style={{ fontFamily: "var(--font-sans)" }}
+    />
+  )
 }

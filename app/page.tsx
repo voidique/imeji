@@ -33,7 +33,9 @@ export default function LandingPage() {
     <div className="relative flex min-h-svh flex-col">
       {/* top bar */}
       <header className="flex items-center justify-between px-6 py-6 sm:px-10">
-        <span className="text-xl font-semibold tracking-tight">Imeji</span>
+        <span className="font-serif text-2xl font-medium tracking-tight">
+          Imeji
+        </span>
         <button
           onClick={start}
           className="clay-pill text-foreground focus-visible:ring-ring/40 h-10 rounded-full px-5 text-sm font-medium outline-none focus-visible:ring-4"
@@ -44,7 +46,7 @@ export default function LandingPage() {
 
       {/* hero */}
       <main className="flex flex-col items-center px-6 pt-20 text-center sm:pt-28">
-        <h1 className="text-foreground text-5xl font-semibold leading-[1.04] tracking-tight text-balance sm:text-6xl">
+        <h1 className="text-foreground font-serif text-5xl font-medium leading-[1.05] tracking-tight text-balance sm:text-7xl">
           Turn scattered ideas
           <br />
           into a single map
@@ -86,7 +88,7 @@ export default function LandingPage() {
           <span className="text-muted-foreground text-xs font-medium tracking-[0.2em] uppercase">
             Your knowledge, connected
           </span>
-          <h2 className="text-foreground mt-4 text-3xl font-semibold tracking-tight text-balance sm:text-5xl">
+          <h2 className="text-foreground mt-4 font-serif text-3xl font-medium tracking-tight text-balance sm:text-5xl">
             Watch the dots connect
           </h2>
           <p className="text-muted-foreground mx-auto mt-5 max-w-md text-balance">
@@ -103,7 +105,7 @@ export default function LandingPage() {
 
       {/* manifesto */}
       <section className="mx-auto w-full max-w-4xl px-6 pb-28 sm:pb-36">
-        <h2 className="text-foreground text-center text-3xl leading-[1.15] font-semibold tracking-tight text-balance sm:text-5xl">
+        <h2 className="text-foreground text-center font-serif text-3xl leading-[1.15] font-medium tracking-tight text-balance sm:text-5xl">
           Every big idea begins
           <br className="hidden sm:block" /> as a scattered thought.
         </h2>

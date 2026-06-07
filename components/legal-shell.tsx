@@ -14,7 +14,10 @@ export function LegalShell({
   return (
     <div className="flex min-h-svh flex-col">
       <header className="flex items-center justify-between px-6 py-6 sm:px-10">
-        <Link href="/" className="text-xl font-semibold tracking-tight">
+        <Link
+          href="/"
+          className="font-serif text-2xl font-medium tracking-tight"
+        >
           Imeji
         </Link>
         <Link
@@ -26,7 +29,7 @@ export function LegalShell({
       </header>
 
       <main className="mx-auto w-full max-w-2xl flex-1 px-6 py-16 sm:py-24">
-        <h1 className="text-4xl font-semibold tracking-tight text-balance">
+        <h1 className="font-serif text-5xl font-medium tracking-tight text-balance">
           {title}
         </h1>
         <p className="text-muted-foreground mt-3 text-sm">

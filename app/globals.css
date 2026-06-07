@@ -1,4 +1,5 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -49,7 +50,8 @@
 @theme {
     --font-sans: "Pretendard Variable", Pretendard, ui-sans-serif, system-ui,
         -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-    --font-heading: var(--font-sans);
+    --font-serif: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+    --font-heading: var(--font-serif);
 
     --color-gray-50: oklch(1 0 0);
     --color-gray-100: oklch(0.94309 0 0);
@@ -200,6 +202,14 @@
   html {
     @apply font-sans;
     }
+}
+
+/* markmap renders its own SVG/foreignObject text — force the app font */
+.markmap-svg,
+.markmap-svg text,
+.markmap-svg div,
+.markmap-svg span {
+  font-family: var(--font-sans) !important;
 }
 
 .dark body {

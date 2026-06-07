@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { MoreVertical, Pencil, Plus, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 
 import { useAuth } from "@/hooks/use-auth"
@@ -25,19 +24,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function MindmapsPage() {
   const router = useRouter()
-  const { user, loading: authLoading, signOut } = useAuth("/login")
+  const { user, signOut } = useAuth("/login")
 
   const [items, setItems] = useState<MindmapListItem[] | null>(null)
   const [createOpen, setCreateOpen] = useState(false)
@@ -99,24 +92,27 @@ export default function MindmapsPage() {
     }
   }
 
-  if (authLoading || !user) {
-    return (
-      <div className="flex min-h-svh items-center justify-center">
-        <p className="text-muted-foreground text-sm">Loading…</p>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-svh">
       <AppHeader user={user} onSignOut={signOut} />
 
       <main className="mx-auto max-w-5xl p-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold tracking-tight">Your maps</h1>
-          <Button onClick={() => setCreateOpen(true)}>
-            <Plus className="size-4" /> New map
-          </Button>
+        <div className="mb-8 flex items-center justify-between">
+          <h1 className="font-serif text-3xl font-medium tracking-tight">
+            Your maps
+          </h1>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="rounded-full"
+              onClick={() => router.push("/mindmaps/new")}
+            >
+              Generate
+            </Button>
+            <Button className="rounded-full" onClick={() => setCreateOpen(true)}>
+              New map
+            </Button>
+          </div>
         </div>
 
         {items === null ? (
@@ -135,35 +131,38 @@ export default function MindmapsPage() {
                 className="group hover:border-primary/50 cursor-pointer transition-colors"
                 onClick={() => router.push(`/mindmaps/${item.id}`)}
               >
-                <CardHeader className="flex-row items-start justify-between gap-2">
-                  <CardTitle className="truncate text-base">{item.title}</CardTitle>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                      <Button variant="ghost" size="icon" className="-mt-1 -mr-1 size-7">
-                        <MoreVertical className="size-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      align="end"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <DropdownMenuItem onSelect={() => setRenaming(item)}>
-                        <Pencil className="size-4" /> Rename
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        variant="destructive"
-                        onSelect={() => handleDelete(item)}
-                      >
-                        <Trash2 className="size-4" /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                <CardHeader>
+                  <CardTitle className="truncate text-base font-medium">
+                    {item.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="text-muted-foreground text-sm">
                   {item.conceptCount} concepts
                 </CardContent>
-                <CardFooter className="text-muted-foreground text-xs">
-                  Updated {new Date(item.updatedAt).toLocaleDateString("en-US")}
+                <CardFooter className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">
+                    Updated {new Date(item.updatedAt).toLocaleDateString("en-US")}
+                  </span>
+                  <span className="flex gap-3 opacity-0 transition-opacity group-hover:opacity-100">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setRenaming(item)
+                      }}
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      Rename
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleDelete(item)
+                      }}
+                      className="text-muted-foreground hover:text-destructive transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </span>
                 </CardFooter>
               </Card>
             ))}
@@ -201,8 +200,8 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
       <p className="text-muted-foreground mt-1 text-sm">
         Create your first topic to start brainstorming.
       </p>
-      <Button className="mt-4" onClick={onCreate}>
-        <Plus className="size-4" /> New map
+      <Button className="mt-4 rounded-full" onClick={onCreate}>
+        New map
       </Button>
     </div>
   )
